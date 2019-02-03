@@ -22,9 +22,9 @@ const columns = [
     header: {
       label: 'ID',
       transforms: [
-        label => ({
-          onClick: () => sortByKey(rows, 'id')// console.log(`clicked ${label}`)
-        })
+        // label => ({
+        //   onClick: () => sortByKey(rows, 'id')// console.log(`clicked ${label}`)
+        // })
       ]
     }
   },
@@ -33,9 +33,9 @@ const columns = [
     header: {
       label: 'Name',
       transforms: [
-        label => ({
-          onClick: () => sortByKey(rows, 'name')
-        })
+        // label => ({
+        //   onClick: () => sortByKey(rows, 'name')
+        // })
       ]
     }
   },
@@ -44,9 +44,9 @@ const columns = [
     header: {
       label: 'Active',
       transforms: [
-        label => ({
-            onClick: () => sortByKey(rows, 'tools') // console.log(`clicked ${label}`)
-        })
+        // label => ({
+        //     onClick: () => sortByKey(rows, 'tools') // console.log(`clicked ${label}`)
+        // })
       ]
     },
     cell: {
@@ -60,9 +60,9 @@ const columns = [
     header: {
       label: 'Country',
       transforms: [
-        label => ({
-            onClick: () => sortByKey(rows, 'country')
-        })
+        // label => ({
+        //     onClick: () => sortByKey(rows, 'country')
+        // })
       ]
     },
     cell: {
@@ -73,12 +73,18 @@ const columns = [
   }
 ];
 
-function sortByKey(array, key) {
-    return (array.sort(getSortedRows(key)));
-}
 
-//Comparer Function  
-function getSortedRows(prop) {  
+
+export class MyCustomSortTable extends React.Component {
+  componentDidMount() {
+  }
+
+  sortByKey(array, key) {
+    return array.sort(this.getSortedRows(key));
+  }
+
+  //Comparer Function  
+  getSortedRows(prop) {  
     return function(a, b) {  
         if (a[prop] > b[prop]) {  
             return 1;  
@@ -87,42 +93,10 @@ function getSortedRows(prop) {
         }  
         return 0;  
     }  
-}  
-
-export class MyCustomSortTable extends React.Component {
-  componentDidMount() {
-  }
+  }  
 
   constructor(props) {
-    console.log(props, 'PROPS');
     super(props);
-
-    // const getSortingColumns = () => this.state.sortingColumns || {};
-    // const sortable = sort.sort({
-    //   // Point the transform to your rows. React state can work for this purpose
-    //   // but you can use a state manager as well.
-    //   getSortingColumns,
-
-    //   // The user requested sorting, adjust the sorting state accordingly.
-    //   // This is a good chance to pass the request through a sorter.
-    //   onSort: selectedColumn => {
-    //     this.setState({
-    //       sortingColumns: sort.byColumns({ // sort.byColumn would work too
-    //         sortingColumns: this.state.sortingColumns,
-    //         selectedColumn
-    //       })
-    //     });
-    //   },
-
-    //   // Use property strategy over index one given we have nested data
-    //   strategy: sort.strategies.byProperty
-    // });
-    // const resetable = sort.reset({
-    //   event: 'onDoubleClick',
-    //   getSortingColumns,
-    //   onReset: ({ sortingColumns }) => this.setState({ sortingColumns }),
-    //   strategy: sort.strategies.byProperty
-    // });
     this.state = {
      rows: this.props.sortedRows
     }
@@ -133,7 +107,13 @@ export class MyCustomSortTable extends React.Component {
       <Table.Provider
          className="table table-striped table-bordered"
          columns={columns} >
-        <Table.Header onClick={(i)=>console.log('clicked', i.target)}/>
+        <Table.Header onClick={(i) => {
+          const cellText = i.target.innerHTML.toLowerCase();
+          (cellText === 'active') ? this.setState({rows : this.sortByKey(rows, 'tools')}) : 
+            this.setState({rows : this.sortByKey(rows, cellText)})
+
+            console.log(this.state.rows, 'ROWS');
+        }}/>
         <Table.Body rows={this.state.rows} rowKey="id" />
       </Table.Provider>
     );
