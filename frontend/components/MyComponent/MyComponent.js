@@ -22,7 +22,7 @@ export class MyComponent extends React.Component {
   }
 
   showMyModal() {
-    console.log('showMyModal called');
+    // console.log('showMyModal called');
     this.props.showMyModal();
   }
 

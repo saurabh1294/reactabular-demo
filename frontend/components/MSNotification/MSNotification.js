@@ -8,7 +8,7 @@ export class MSNotification extends React.Component {
   }
 
   getNotificationMessage() {
-    console.log('MSNotification.js: MSNotification.getNotificationMessage called => ', 'this.props.notificationMessage=', this.props.notificationMessage);
+    // console.log('MSNotification.js: MSNotification.getNotificationMessage called => ', 'this.props.notificationMessage=', this.props.notificationMessage);
     return this.props.notificationMessage? this.props.notificationMessage:'';
   }
 

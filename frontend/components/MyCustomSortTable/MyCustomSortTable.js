@@ -63,31 +63,52 @@ export class MyCustomSortTable extends React.Component {
     return true;
   }
 
-  sortByKey(array, key) {
-    return array.sort(this.getSortedRows(key));
+  sortByKey(array, key, sortOrder) {
+    return array.sort(this.getSortedRows(key, sortOrder));
   }
 
-  //Comparer Function  
-  getSortedRows(prop) {  
-    return function(a, b) {  
+  //comparer Function  
+  getSortedRows(prop, sortOrder) {  
+    return function(a, b) {
+      const hammerA = (a[prop].hasOwnProperty('hammer')) ? a[prop].hammer : '';
+      const hammerB = (b[prop].hasOwnProperty('hammer')) ? b[prop].hammer : '';
+      if (hammerA !== '' && hammerB !== '') {
+        if (hammerA < hammerB) {  
+          return (sortOrder === 'ASC') ? 1 : -1;  
+        } else if (hammerA > hammerB) {  
+          return (sortOrder === 'DESC') ? -1 : 1;   
+        }
+      }
+
+      else {
         if (a[prop] > b[prop]) {  
-            return 1;  
+          return (sortOrder === 'ASC') ? 1 : -1;   
         } else if (a[prop] < b[prop]) {  
-            return -1;  
-        }  
-        return 0;  
+          return (sortOrder === 'DESC') ? -1 : 1;   
+        } 
+      }
+      return 0;  
     }  
   }  
 
   constructor(props) {
     super(props);
     this.state = {
-     rows: this.props.sortedRows
+      rows: this.props.sortedRows,
+      sortOrder: 'UNSORTED'
     }
   }
 
   modifyState(key) {
-    this.setState({rows : this.sortByKey(rows, key)});
+    if (this.state.sortOrder === 'UNSORTED') {
+      this.setState({sortOrder: 'ASC'});
+    } else if (this.state.sortOrder === 'DESC') {
+      this.setState({sortOrder: 'ASC'});
+    }
+    else{
+      this.setState({sortOrder: 'DESC'});
+    }
+    this.setState({rows : this.sortByKey(rows, key, this.state.sortOrder)});
   }
 
   render() {

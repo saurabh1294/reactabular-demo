@@ -16,13 +16,13 @@ function RootReducer(storeState = {}, action) {
     finalStoreState = update(storeState, {showMyModal: {$set: action.showMyModal}});
     break;
   case 'EVT_SORT_TABLE':
-    console.log('EVT_SORT_TABLE', action.payload);
+    // console.log('EVT_SORT_TABLE', action.payload);
     finalStoreState = update(storeState, {sortedRows: {$set: action.payload}});
     break;
   default:
     finalStoreState = storeState;
   }
-  console.log('RootReducer.js: RootReducer called => ', 'finalStoreState=', finalStoreState, 'action=', action);
+  // console.log('RootReducer.js: RootReducer called => ', 'finalStoreState=', finalStoreState, 'action=', action);
   return finalStoreState;
 }
 export default RootReducer;

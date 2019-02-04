@@ -38,9 +38,9 @@ export class MyModal extends React.Component {
 
   save(values) {
     let self = this;
-    console.log('MyModal.js: MyModal.save called => ', 'values=', values);
+    // console.log('MyModal.js: MyModal.save called => ', 'values=', values);
     this.props.loginNow(values).then(function(token) {
-      console.log('MyModal.js: MyModal.save called => ', 'token=', token);
+      // console.log('MyModal.js: MyModal.save called => ', 'token=', token);
       if(!token) {
         self.setState({
           resultMessage: 'Token is null. User name should be either `user1` or `user2`!'
@@ -101,7 +101,7 @@ MyModal.contextTypes = {
 function mapDispatchToProps(dispatch) {
   return({
     loginNow: function(values) {
-      console.log('MyModal.js: ?.loginNow called => ', 'values=', values);
+      // console.log('MyModal.js: ?.loginNow called => ', 'values=', values);
       return postJSON(getRoutePath('api/test'), {
         username: values.username,
         password: values.password

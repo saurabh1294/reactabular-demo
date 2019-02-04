@@ -97,12 +97,12 @@ function trim(s) {
 }
 
 function validatorRequired(val) {
-  console.log('CommonUtil.js: validatorRequired called => ', 'val=', val);
+  // console.log('CommonUtil.js: validatorRequired called => ', 'val=', val);
   return val && val.length > 0;
 }
 
 function validatorAlphaNumeric(val) {
-  console.log('CommonUtil.js: validatorAlphaNumeric called => ', 'val=', val);
+  // console.log('CommonUtil.js: validatorAlphaNumeric called => ', 'val=', val);
   return /^[a-zA-Z0-9]+$/.test(val);
 }
 
