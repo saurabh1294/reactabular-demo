@@ -20,34 +20,19 @@ const columns = [
   {
     property: 'id',
     header: {
-      label: 'ID',
-      transforms: [
-        // label => ({
-        //   onClick: () => sortByKey(rows, 'id')// console.log(`clicked ${label}`)
-        // })
-      ]
+      label: 'ID'
     }
   },
   {
     property: 'name',
     header: {
-      label: 'Name',
-      transforms: [
-        // label => ({
-        //   onClick: () => sortByKey(rows, 'name')
-        // })
-      ]
+      label: 'Name'
     }
   },
   {
     property: 'tools',
     header: {
-      label: 'Active',
-      transforms: [
-        // label => ({
-        //     onClick: () => sortByKey(rows, 'tools') // console.log(`clicked ${label}`)
-        // })
-      ]
+      label: 'Active'
     },
     cell: {
       formatters: [
@@ -58,12 +43,7 @@ const columns = [
   {
     property: 'country',
     header: {
-      label: 'Country',
-      transforms: [
-        // label => ({
-        //     onClick: () => sortByKey(rows, 'country')
-        // })
-      ]
+      label: 'Country'
     },
     cell: {
       formatters: [
@@ -77,6 +57,10 @@ const columns = [
 
 export class MyCustomSortTable extends React.Component {
   componentDidMount() {
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return true;
   }
 
   sortByKey(array, key) {
@@ -102,17 +86,29 @@ export class MyCustomSortTable extends React.Component {
     }
   }
 
+  modifyState(key) {
+    this.setState({rows : this.sortByKey(rows, key)});
+  }
+
   render() {
+    const BodyWrapper = props => <tbody {...props} />;
+    const RowWrapper = props => <tr {...props} />;
     return (
       <Table.Provider
          className="table table-striped table-bordered"
-         columns={columns} >
+         columns={columns}
+         renderers={{
+          body: {
+            wrapper: BodyWrapper,
+            row: RowWrapper
+          }
+        }}
+         
+         >
         <Table.Header onClick={(i) => {
           const cellText = i.target.innerHTML.toLowerCase();
-          (cellText === 'active') ? this.setState({rows : this.sortByKey(rows, 'tools')}) : 
-            this.setState({rows : this.sortByKey(rows, cellText)})
-
-            console.log(this.state.rows, 'ROWS');
+          (cellText === 'active') ? this.modifyState('tools') : 
+            this.modifyState(cellText);
         }}/>
         <Table.Body rows={this.state.rows} rowKey="id" />
       </Table.Provider>
